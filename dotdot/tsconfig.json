@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compileOnSave": false,
+  "files": [],
+  "references": [
+    {
+      "path": "./apps/midi-sync-player-e2e"
+    },
+    {
+      "path": "./apps/midi-sync-player"
+    }
+  ]
+}
