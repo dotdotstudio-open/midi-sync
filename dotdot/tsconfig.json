@@ -11,6 +11,9 @@
     },
     {
       "path": "./apps/midi-sync/player"
+    },
+    {
+      "path": "./libs/services/midi-sync/node"
     }
   ]
 }
