@@ -17,6 +17,27 @@
     },
     {
       "path": "./libs/services/midi-sync/react"
+    },
+    {
+      "path": "./libs/services/midi-sync/client"
+    },
+    {
+      "path": "./libs/services/midi-sync/client"
+    },
+    {
+      "path": "./libs/services/midi-sync/client"
+    },
+    {
+      "path": "./libs/services/midi-sync/client"
+    },
+    {
+      "path": "./libs/services/midi-sync/client"
+    },
+    {
+      "path": "./libs/services/midi-sync/client"
+    },
+    {
+      "path": "./libs/services/midi-sync/client"
     }
   ]
 }
