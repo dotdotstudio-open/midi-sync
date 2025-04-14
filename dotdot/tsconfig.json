@@ -4,10 +4,13 @@
   "files": [],
   "references": [
     {
-      "path": "./apps/midi-sync-player-e2e"
+      "path": "./apps/midi-sync/server"
     },
     {
-      "path": "./apps/midi-sync-player"
+      "path": "./apps/midi-sync/player-e2e"
+    },
+    {
+      "path": "./apps/midi-sync/player"
     }
   ]
 }
