@@ -1,6 +1,6 @@
-# services-midi-sync-client
+# Midi Sync Service Client
 
-This library was generated with [Nx](https://nx.dev).
+This library provides the client for the Midi Sync Service.
 
 ## Building
 
