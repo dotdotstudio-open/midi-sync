@@ -18,6 +18,7 @@
     "target": "es2022",
     "customConditions": ["development"],
     "baseUrl": ".",
+    "rootDir": ".",
     "paths": {
       "@dotdot/services/midi-sync/contract": ["libs/services/midi-sync/contract/src/index.ts"],
       "@dotdot/services/midi-sync/client": ["libs/services/midi-sync/client/src/index.ts"],
