@@ -1,6 +1,6 @@
-# services-midi-sync-react
+# Midi Sync Service React Library
 
-This library was generated with [Nx](https://nx.dev).
+This library provides React Components for the Midi Sync Service.
 
 ## Running unit tests
 

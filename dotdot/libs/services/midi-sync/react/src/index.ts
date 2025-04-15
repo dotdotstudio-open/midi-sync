@@ -1,1 +1,2 @@
-export * from './lib/services-midi-sync-react';
+export * from './lib/midi-sync-client-context'
+export * from './lib/midi-note-display'
