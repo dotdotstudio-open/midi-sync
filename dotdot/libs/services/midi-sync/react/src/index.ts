@@ -1,2 +1,7 @@
 export * from './lib/midi-sync-client-context'
 export * from './lib/midi-note-display'
+export * from './lib/midi-data-context'
+export * from './lib/midi-data-provider'
+export * from './lib/midi-playback-controller'
+export * from './lib/midi-playback-controls'
+export * from './lib/midi-sync-client-provider'

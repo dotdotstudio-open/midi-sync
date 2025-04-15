@@ -3,6 +3,9 @@
   "include": [],
   "references": [
     {
+      "path": "../../../libs/services/midi-sync/react"
+    },
+    {
       "path": "./tsconfig.app.json"
     },
     {

@@ -5,8 +5,12 @@ import { createContext, useCallback, useContext, useEffect, useRef } from 'react
 export type MidiSyncClientContextType = MidiSyncServiceClient | null
 export const MidiSyncClientContext = createContext<MidiSyncClientContextType>(null)
 
+export const useMidiSyncClient = () => {
+  return useContext(MidiSyncClientContext)
+}
+
 export const useAnimateMidiPlayback = () => {
-  const midiSyncClient = useContext(MidiSyncClientContext)
+  const midiSyncClient = useMidiSyncClient()
   const playbackStartTime = useRef<Date>(undefined)
   const playbackTime = useMotionValue(0)
 
@@ -29,4 +33,6 @@ export const useAnimateMidiPlayback = () => {
       listener?.dispose()
     }
   }, [midiSyncClient, onPlaybackTrigger])
+
+  return playbackTime
 }

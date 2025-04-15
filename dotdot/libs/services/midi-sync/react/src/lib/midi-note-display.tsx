@@ -23,11 +23,10 @@ export const MidiNoteDisplay = ({
     <Container>
       <Progress
         type='circle' 
-        format={() => holdValue}
+        format={() => `${note}`}
         percent={countdownValue}
         success={{percent: holdValue}}
       />
-      <h1>{note}</h1>
     </Container>
   )
 }
