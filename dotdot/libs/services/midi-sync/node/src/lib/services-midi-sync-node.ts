@@ -21,10 +21,12 @@ export class MidiSyncService extends WebSocketService<typeof MidiSyncServiceCont
 
   public onStartPlayback = this.method('startPlayback', (identity, request) => {
     if (this.midiStartTime > 0 && !request.restart) {
+      console.log('[Midi Sync Service] Received playback trigger while playing - ignoring')
       return false
     }
 
     const currentTime = Date.now()
+    console.log('[Midi Sync Service] Sending playback trigger')
     for (const client in this.clients) {
       this.send(client, 'startPlayback', {
         serverTime: currentTime,

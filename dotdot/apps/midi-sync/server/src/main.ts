@@ -14,4 +14,4 @@ async function start() {
   return host.listen(environment.SERVICE_PORT)
 }
 
-start().then(() => console.log('Social Server on Port', environment.SERVICE_PORT))
+start().then(() => console.log('Sync Server on Port', environment.SERVICE_PORT))

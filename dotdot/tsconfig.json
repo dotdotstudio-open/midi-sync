@@ -23,9 +23,6 @@
     },
     {
       "path": "./libs/services/midi-sync/contract"
-    },
-    {
-      "path": "./libs/services/midi-sync/service"
     }
   ],
   "ts-node": {

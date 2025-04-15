@@ -3,6 +3,18 @@
   "version": "0.0.1",
   "private": true,
   "nx": {
-    "name": "midi-sync-player"
+    "name": "midi-sync-player",
+    "targets": {
+      "serve-app": {
+        "executor": "nx:run-commands",
+        "outputs": [],
+        "options": {
+          "commands": [
+            "nx serve midi-sync-server",
+            "nx serve midi-sync-player"
+          ]
+        }
+      }
+    }
   }
 }
