@@ -1,5 +1,5 @@
 import { WebSocketService } from '@sidewinder/server'
-import { MidiSyncServiceContract } from '@dotdot/services/midi-sync/contract'
+import { MidiSyncServiceContract } from '@dotdot/services-midi-sync-contract'
 
 export class MidiSyncService extends WebSocketService<typeof MidiSyncServiceContract> {
   midiStartTime = 0

@@ -2,7 +2,7 @@
 // --------------------------------------------------------------------------
 // Service Types
 // --------------------------------------------------------------------------
-import { MidiSyncService } from '@dotdot/services/midi-sync/node'
+import { MidiSyncService } from '@dotdot/services-midi-sync-node'
 
 // --------------------------------------------------------------------------
 // Midi Sync Service

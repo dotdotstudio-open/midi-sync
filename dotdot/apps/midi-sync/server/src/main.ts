@@ -1,4 +1,3 @@
-require('./instrumentation')
 import { environment } from './environment/environment'
 import { Host } from '@sidewinder/server'
 import cors from 'cors'
