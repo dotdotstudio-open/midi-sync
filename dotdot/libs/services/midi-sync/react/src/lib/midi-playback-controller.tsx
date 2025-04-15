@@ -17,8 +17,8 @@ export const MidiPlaybackController = ({
   const [countdownValue, setCountdownValue] = useState(0)
   const [holdValue, setHoldValue] = useState(0)
   useMotionValueEvent(playbackTime, 'change', (time) => {
-    setCountdownValue(Math.min(time % 200, 100))
-    setHoldValue(Math.min(Math.max((time % 200) - 100, 0), 100))
+    setCountdownValue(Math.min((time % 2000) / 10, 100))
+    setHoldValue(Math.min(Math.max(((time % 2000) / 10) - 100, 0), 100))
   })
   return (
     <MotionMidiNoteDisplay

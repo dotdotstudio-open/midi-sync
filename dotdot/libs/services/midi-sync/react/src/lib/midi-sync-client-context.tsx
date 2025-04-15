@@ -27,12 +27,23 @@ export const useAnimateMidiPlayback = () => {
     playbackStartTime.current = startTime
   }, [])
 
+  const onStopTrigger = useCallback(() => {
+    playbackStartTime.current = undefined
+  }, [])
+
   useEffect(() => {
     const listener = midiSyncClient ? midiSyncClient.on('startPlayback', onPlaybackTrigger) : undefined
     return () => {
       listener?.dispose()
     }
   }, [midiSyncClient, onPlaybackTrigger])
+
+  useEffect(() => {
+    const listener = midiSyncClient ? midiSyncClient.on('stopPlayback', onStopTrigger) : undefined
+    return () => {
+      listener?.dispose()
+    }
+  }, [midiSyncClient, onStopTrigger])
 
   return playbackTime
 }

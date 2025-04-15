@@ -14,8 +14,14 @@ export const MidiSyncClientProvider = ({
   const [client, setClient] = useState<MidiSyncClientContextType>(null)
 
   useEffect(() => {
+    console.log('[Midi Sync Client Provider] Creating new client at endpoint: ', endpoint)
     const newClient = new MidiSyncServiceClient(endpoint)
     setClient(newClient)
+    console.log('[Midi Sync Client Provider] Created and set new client')
+    return () => {
+      console.log('[Midi Sync Client Provider] Disposing of client')
+      newClient.dispose()
+    }
   }, [endpoint])
 
   return (

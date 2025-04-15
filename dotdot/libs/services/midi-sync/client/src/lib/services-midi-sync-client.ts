@@ -11,6 +11,7 @@ export class MidiSyncServiceClient {
     this.events = new Events()
     this.client.method('startPlayback', (event) => this.events.send('startPlayback', event))
     this.client.method('stopPlayback', (event) => this.events.send('stopPlayback', event))
+    this.client.event('error', error => console.error('[Midi Sync Service Client] Connection error: ', error))
   }
 
   public triggerStart = async (startDelayMs: number, restart?: boolean) => {
@@ -27,12 +28,17 @@ export class MidiSyncServiceClient {
   }
 
   public triggerStop = async () => {
-    await this.client.call('stopPlayback')
+    await this.client.call('stopPlayback', undefined)
   }
 
   public on(event: 'stopPlayback', handler: EventHandler<StopPlaybackRequest>): EventListener
   public on(event: 'startPlayback', handler: EventHandler<StartPlaybackTriggerRequest>): EventListener 
   public on(event: string, handler: EventHandler<any>): EventListener {
     return this.events.on(event, handler)
+  }
+
+  public dispose() {
+    this.events.dispose()
+    this.client.close()
   }
 }

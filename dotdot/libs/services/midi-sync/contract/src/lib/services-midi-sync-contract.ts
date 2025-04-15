@@ -46,7 +46,7 @@ export const MidiSyncServiceContract = Type.Contract({
   server: {
     getSyncState: Type.Function([GetSyncStateRequest], GetSyncStateResponse),
     startPlayback: Type.Function([StartPlaybackRequest], StartPlaybackResponse),
-    stopPlayback: Type.Function([StopPlaybackResponse], StopPlaybackResponse),
+    stopPlayback: Type.Function([StopPlaybackRequest], StopPlaybackResponse),
   },
   client: {
     startPlayback: Type.Function([StartPlaybackTriggerRequest], Type.Void()),

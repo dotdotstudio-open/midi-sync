@@ -1,6 +1,6 @@
 import { useCallback } from "react"
 import { useMidiSyncClient } from "./midi-sync-client-context"
-import { Button } from "antd"
+import { Button, Flex } from "antd"
 
 export const MidiPlaybackControls = () => {
   const client = useMidiSyncClient()
@@ -9,7 +9,14 @@ export const MidiPlaybackControls = () => {
     client?.triggerStart(500)
   }, [client])
 
+  const triggerStop = useCallback(() => {
+    client?.triggerStop()
+  }, [client])
+
   return (
-    <Button onClick={triggerPlayback}>Start Playback</Button>
+    <Flex dir='row'>
+        <Button onClick={triggerPlayback}>Start Playback</Button>
+        <Button onClick={triggerStop}>Stop Playback</Button>
+    </Flex>
   )
 }

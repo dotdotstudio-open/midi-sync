@@ -10,7 +10,7 @@
         "outputs": [],
         "options": {
           "commands": [
-            "nx serve midi-sync-server",
+            "nx serve midi-sync-server --host=0.0.0.0",
             "nx serve midi-sync-player"
           ]
         }
