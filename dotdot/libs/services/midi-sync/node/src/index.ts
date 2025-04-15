@@ -1,1 +1,1 @@
-export * from './lib/services-midi-sync-node.js';
+export * from './lib/services-midi-sync-node'

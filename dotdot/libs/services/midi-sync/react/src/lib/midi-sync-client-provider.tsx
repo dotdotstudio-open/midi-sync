@@ -1,6 +1,6 @@
 import { ReactNode, useEffect, useState } from "react"
 import { MidiSyncClientContext, MidiSyncClientContextType } from "./midi-sync-client-context"
-import { MidiSyncServiceClient } from "@dotdot/services-midi-sync-client"
+import { MidiSyncServiceClient } from "@dotdot/services/midi-sync/client"
 
 export type MidiSyncClientProviderProps = {
   endpoint: string

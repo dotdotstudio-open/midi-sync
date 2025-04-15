@@ -1,4 +1,4 @@
-import { MidiSyncServiceClient } from '@dotdot/services-midi-sync-client'
+import { MidiSyncServiceClient } from '@dotdot/services/midi-sync/client'
 import { useAnimationFrame, useMotionValue } from 'motion/react'
 import { createContext, useCallback, useContext, useEffect, useRef } from 'react'
 

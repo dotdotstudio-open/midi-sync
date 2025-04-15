@@ -16,6 +16,13 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "es2022",
-    "customConditions": ["development"]
+    "customConditions": ["development"],
+    "baseUrl": ".",
+    "paths": {
+      "@dotdot/services/midi-sync/contract": ["libs/services/midi-sync/contract/src/index.ts"],
+      "@dotdot/services/midi-sync/client": ["libs/services/midi-sync/client/src/index.ts"],
+      "@dotdot/services/midi-sync/node": ["libs/services/midi-sync/node/src/index.ts"],
+      "@dotdot/services/midi-sync/react": ["libs/services/midi-sync/react/src/index.ts"]
+    }
   }
 }

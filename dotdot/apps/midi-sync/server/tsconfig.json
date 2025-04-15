@@ -4,6 +4,9 @@
   "include": [],
   "references": [
     {
+      "path": "../../../libs/services/midi-sync/node"
+    },
+    {
       "path": "./tsconfig.app.json"
     }
   ]

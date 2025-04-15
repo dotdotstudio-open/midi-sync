@@ -1,4 +1,4 @@
-import { MidiSyncServiceContract, StartPlaybackTriggerRequest, StopPlaybackRequest } from '@dotdot/services-midi-sync-contract'
+import { MidiSyncServiceContract, StartPlaybackTriggerRequest, StopPlaybackRequest } from '@dotdot/services/midi-sync/contract'
 import {WebSocketClient} from '@sidewinder/client'
 import {EventHandler, EventListener, Events} from '@sidewinder/events'
 
