@@ -24,6 +24,16 @@ export const MidiSyncClientProvider = ({
     }
   }, [endpoint])
 
+  useEffect(() => {
+    const intervalId = client ? setInterval(client.sync, 250) : undefined
+
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId)
+      }
+    }
+  }, [client])
+
   return (
     <MidiSyncClientContext.Provider value={client}>
       {children}

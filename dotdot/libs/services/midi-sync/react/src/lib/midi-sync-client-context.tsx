@@ -23,12 +23,16 @@ export const useAnimateMidiPlayback = () => {
   })
 
   const onPlaybackTrigger = useCallback(({serverTime, startDelayMs}: {serverTime: number, startDelayMs: number}) => {
-    const startTime = new Date(serverTime + startDelayMs)
+    const startTime = new Date(serverTime + startDelayMs) // new Date(serverTime + startDelayMs)
     playbackStartTime.current = startTime
   }, [])
 
   const onStopTrigger = useCallback(() => {
     playbackStartTime.current = undefined
+  }, [])
+
+  const onSync = useCallback(({startTime}: {startTime: number}) => {
+    playbackStartTime.current = new Date(startTime)
   }, [])
 
   useEffect(() => {
@@ -44,6 +48,13 @@ export const useAnimateMidiPlayback = () => {
       listener?.dispose()
     }
   }, [midiSyncClient, onStopTrigger])
+
+  useEffect(() => {
+    const listener = midiSyncClient ? midiSyncClient.on('syncPlayback', onSync) : undefined
+    return () => {
+      listener?.dispose()
+    }
+  })
 
   return playbackTime
 }
