@@ -20,8 +20,9 @@ export const MidiDataProvider = ({
         throw new Error(`Response Status: ${response.status}`)
       }
       const content = await response.arrayBuffer()
-      const parsed = parseMidi(Buffer.from(content))
+      const parsed = parseMidi(new Uint8Array(content))
       setMidi(parsed)
+      console.log('[Midi File Reader] Parsed midi: ', parsed)
     } catch (error) {
       console.warn('[Midi File Reader] Failed to load file. ', error)
     }
