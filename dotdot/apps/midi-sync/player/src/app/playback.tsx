@@ -12,6 +12,7 @@ export const Playback = () => {
 
   return (
     <MidiDataProvider midiFileUrl={`${environment.appDomain}/midi/${file}.mid`}>
+      <h1>{file}</h1>
       <MidiDataPlayback />
     </MidiDataProvider>
   )

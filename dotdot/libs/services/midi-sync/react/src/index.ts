@@ -1,3 +1,6 @@
+export * from './lib/clef-context'
+export * from './lib/clef-context-provider'
+export * from './lib/clef-selector'
 export * from './lib/midi-sync-client-context'
 export * from './lib/midi-note-display'
 export * from './lib/midi-data-context'

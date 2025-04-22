@@ -1,4 +1,4 @@
-import { MidiPlaybackController, MidiPlaybackControls, useMidiData } from "@dotdot/services-midi-sync-react"
+import { ClefSelector, MidiPlaybackController, useMidiData } from "@dotdot/services-midi-sync-react"
 
 export const MidiDataPlayback = () => {
   const midiData = useMidiData()
@@ -9,7 +9,7 @@ export const MidiDataPlayback = () => {
     return (
       <>
         <MidiPlaybackController midiData={midiData} />
-        <MidiPlaybackControls />
+        <ClefSelector />
       </>
     )
   }
