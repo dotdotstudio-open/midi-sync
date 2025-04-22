@@ -1,8 +1,9 @@
 import { Progress } from "antd"
 import styled from "styled-components"
+import { NoteDisplay, NoteDisplayProps } from "./note-display"
 
 export type MidiNoteDisplayProps = {
-  note: string
+  note: NoteDisplayProps
   countdownValue: number
   holdValue: number
 }
@@ -23,7 +24,7 @@ export const MidiNoteDisplay = ({
     <Container>
       <Progress
         type='circle' 
-        format={() => `${note}`}
+        format={() => <NoteDisplay {...note} />}
         percent={countdownValue}
         success={{percent: holdValue}}
       />

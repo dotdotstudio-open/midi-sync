@@ -20,7 +20,11 @@ export const Primary = {
 
 export const Heading: Story = {
   args: {
-    note: '',
+    note: {
+      noteId: 72,
+      duration: 'short',
+      velocity: 100,
+    },
     countdownValue: 0,
     holdValue: 0,
   },

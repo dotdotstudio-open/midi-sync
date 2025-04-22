@@ -3,6 +3,7 @@ import { useAnimateMidiPlayback } from "./midi-sync-client-context"
 import { MidiData, MidiEvent } from "midi-file"
 import { MidiNoteDisplay } from "./midi-note-display"
 import { useCallback, useEffect, useRef, useState } from "react"
+import { NoteDisplayProps } from "./note-display"
 
 export type MidiPlaybackControllerProps = {
   midiData?: MidiData
@@ -13,6 +14,7 @@ const MotionMidiNoteDisplay = motion.create(MidiNoteDisplay)
 type PlaybackTrackState = {
   lastEventTime: number
   lastEventIndex: number
+  noteOffDelay: number
 }
 
 export const MidiPlaybackController = ({
@@ -24,11 +26,64 @@ export const MidiPlaybackController = ({
   const trackStates = useRef<PlaybackTrackState[]>([])
   const [countdownValue, setCountdownValue] = useState(0)
   const [holdValue, setHoldValue] = useState(0)
-  const [note, setNote] = useState<number>()
+  const [note, setNote] = useState<NoteDisplayProps>()
   
   const processEvent = useCallback((track: MidiEvent[], state: PlaybackTrackState, time: number) => {
     const currentEvent = track[state.lastEventIndex]
     const deltaTimeMs = currentEvent.deltaTime * (tempo.current / (ticksPerBeat.current * 1000))
+    
+    // Special case of note off - we process immediately and store the delay for the next event
+    if (currentEvent.type === 'noteOff') {
+      // look ahead for next note
+      if (track.length > state.lastEventIndex + 2) {
+        const nextEvent = track[state.lastEventIndex + 1]
+        if (nextEvent.type === 'noteOn') {
+          let noteDuration = ticksPerBeat.current
+          if (track.length > state.lastEventIndex + 3) {
+            const nextNextEvent = track[state.lastEventIndex + 2]
+            if (nextNextEvent.type === 'noteOff') {
+              noteDuration = nextNextEvent.deltaTime
+            }
+          }
+          setNote({
+            noteId: nextEvent.noteNumber,
+            duration: noteDuration > (ticksPerBeat.current / 8) ? 'long' : 'short',
+            velocity: nextEvent.velocity
+          })
+          state.noteOffDelay = deltaTimeMs
+          state.lastEventIndex += 1
+          state.lastEventTime += deltaTimeMs
+          return false
+        }
+      }
+    } else if (currentEvent.type === 'noteOn') {
+      setNote(prev => {
+        if (prev) return prev
+        let noteDuration: 'short' | 'long' = 'long'
+        if (track.length > state.lastEventIndex + 2) {
+          const nextEvent = track[state.lastEventIndex + 1]
+          if (nextEvent.type === 'noteOff') {
+            noteDuration = nextEvent.deltaTime > (ticksPerBeat.current / 8) ? 'long' : 'short'
+          }
+        }
+        return {
+          noteId: currentEvent.noteNumber,
+          duration: noteDuration,
+          velocity: currentEvent.velocity,
+        }
+      })
+      if (state.lastEventTime + deltaTimeMs > time) {
+        // set hold value to percentage we are through delta
+        setCountdownValue(100 * ((time - (state.lastEventTime - state.noteOffDelay)) / (deltaTimeMs + state.noteOffDelay)))
+      } else {
+        setCountdownValue(100)
+      }
+    }
+
+    // Check if we keep going or not
+    if (state.lastEventTime + deltaTimeMs > time) {
+      return false
+    }
     
     // Handle Event Type
     if (currentEvent.type === 'endOfTrack') {
@@ -36,42 +91,10 @@ export const MidiPlaybackController = ({
     }
     else if (currentEvent.type === 'setTempo') {
       tempo.current = currentEvent.microsecondsPerBeat
-    } else if (currentEvent.type === 'noteOn') {
-      if (state.lastEventTime + deltaTimeMs > time) {
-        // set hold value to percentage we are through delta
-        setHoldValue(100 * ((time - state.lastEventTime) / deltaTimeMs))
-      } else {
-        setHoldValue(0)
-      }
-    } else if (currentEvent.type === 'noteOff') {
-      // look ahead for next note
-      if (track.length > state.lastEventIndex + 2) {
-        const nextEvent = track[state.lastEventIndex + 1]
-        if (nextEvent.type === 'noteOn') {
-          setNote(nextEvent.noteNumber)
-        } else {
-          setNote(undefined)
-        }
-      } else {
-        setNote(undefined)
-      }
-      
-      setHoldValue(0)
-      if (state.lastEventTime + deltaTimeMs > time) {
-        setCountdownValue(100 * ((time - state.lastEventTime) / deltaTimeMs))
-      } else {
-        setCountdownValue(100)
-      }
     }
-
-    // Check if we keep going or not
-    if (state.lastEventTime + deltaTimeMs <= time) {
-      state.lastEventIndex += 1
-      state.lastEventTime += deltaTimeMs
-      return true
-    } else {
-      return false
-    }
+    state.lastEventIndex += 1
+    state.lastEventTime += deltaTimeMs
+    return true
   }, [])
 
   const processTrack = useCallback((track: MidiEvent[], state: PlaybackTrackState, time: number) => {
@@ -103,7 +126,8 @@ export const MidiPlaybackController = ({
         for (let i = 0; i < midiData.tracks.length; i += 1) {
           trackStates.current.push({
             lastEventIndex: 0,
-            lastEventTime: 0
+            lastEventTime: 0,
+            noteOffDelay: 0,
           })
         }
       }
@@ -128,7 +152,7 @@ export const MidiPlaybackController = ({
 
   return (
     <MotionMidiNoteDisplay
-      note={`${note}`}
+      note={note}
       countdownValue={countdownValue}
       holdValue={holdValue}
     />
