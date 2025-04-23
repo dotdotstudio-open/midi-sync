@@ -14,9 +14,9 @@ export const MidiPlaybackControls = () => {
   }, [client])
 
   return (
-    <Flex dir='row'>
-        <Button onClick={triggerPlayback}>Start Playback</Button>
-        <Button onClick={triggerStop}>Stop Playback</Button>
+    <Flex dir='row' gap={20}>
+        <Button type='primary' size='large' onClick={triggerPlayback}>Start Playback</Button>
+        <Button size='large' onClick={triggerStop}>Stop Playback</Button>
     </Flex>
   )
 }

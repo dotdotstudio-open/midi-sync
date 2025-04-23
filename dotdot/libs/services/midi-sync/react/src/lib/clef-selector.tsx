@@ -19,10 +19,10 @@ export const ClefSelector = () => {
 
 
   return (
-    <Flex dir='row'>
-        <Button onClick={setClef1}>𝄞</Button>
-        <Button onClick={setClef3}>𝄡</Button>
-        <Button onClick={setClef2}>𝄢</Button>
+    <Flex dir='row' gap={20}>
+        <Button type='primary' size='large' onClick={setClef1}>𝄞</Button>
+        <Button type='primary' size='large' onClick={setClef3}>𝄡</Button>
+        <Button type='primary' size='large' onClick={setClef2}>𝄢</Button>
     </Flex>
   )
 }

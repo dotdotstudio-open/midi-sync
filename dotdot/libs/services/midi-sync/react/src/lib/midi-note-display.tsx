@@ -12,6 +12,8 @@ const Container = styled.div({
   width: '100%',
   height: '100%',
   display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
 })
 
 export const MidiNoteDisplay = ({
@@ -27,6 +29,7 @@ export const MidiNoteDisplay = ({
         format={() => <NoteDisplay {...note} />}
         percent={countdownValue}
         success={{percent: holdValue}}
+        size={[500, 500]}
       />
     </Container>
   )

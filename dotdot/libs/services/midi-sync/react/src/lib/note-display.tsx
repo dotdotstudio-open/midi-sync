@@ -1,6 +1,6 @@
 import { ReactNode } from "react"
 import styled from "styled-components"
-import { Clef, useClef } from "./clef-context"
+import { Clef, ClefOffsets, useClef } from "./clef-context"
 
 export type NoteDisplayProps = {
   noteId: number
@@ -15,7 +15,7 @@ const NotesContainer = styled.div({
   width: 50,
   height: 50,
   fontFamily: 'NotoMusic',
-  transform: 'translate(-50%, -50%)'
+  transform: 'translate(-90%, -50%) scale(2)'
 })
 
 const StaffLayer = styled.div({
@@ -27,6 +27,17 @@ const StaffLayer = styled.div({
   fontSize: 50,
   transform: 'translate(25%, 0)'
 })
+
+const LedgerLayer = styled.div({
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  width: '100%',
+  height: '100%',
+  fontSize: 50,
+  transform: 'translate(50%, 100%) scaleX(0.5)'
+})
+
 
 type NoteLayerProps = {
   noteOffset: number
@@ -75,8 +86,8 @@ const NoteInfoLayer = styled.div<NoteInfoProps & {children: ReactNode}>({
   left: 0,
   width: '100%',
   height: '100%',
-  fontSize: 30,
-  transform: `translate(25%, -80%)`
+  fontSize: 35,
+  transform: `translate(25%, -120%)`
 }, props => ({
   color: props.color
 }))
@@ -88,7 +99,7 @@ const ClefLayer = styled.div({
   width: '100%',
   height: '100%',
   fontSize: 50,
-  transform: 'translate(-50%, 0)'
+  transform: 'translate(-55%, 0)'
 })
 
 const getNoteVelocitySymbol = (velocity: number) => {
@@ -107,43 +118,65 @@ const getNoteVelocitySymbol = (velocity: number) => {
   }
 }
 
-type NoteOffsetLookup = Record<Clef, number>
-
 type NoteDisplayLookupProps = {
-  noteOffset: NoteOffsetLookup
+  noteOffset: number
   modifier?: 'flat' | 'sharp'
-  text: string
-} & NoteInfoProps
+  info: Record<Clef, {text: string} & NoteInfoProps>
+}
 const noteLookup: Record<number, NoteDisplayLookupProps> = {
   //A natural
   69: {
-    noteOffset: {
-      '𝄞': -2,
-      '𝄢': 0,
-      '𝄡': -1
-    },
+    noteOffset: 0,
     //modifier: 'flat',
-    text: 'A0',
-    color: 'blue',
+    info: {
+      '𝄞': {
+        text: 'A0',
+        color: 'blue',
+      },
+      '𝄢': {
+        text: 'A0',
+        color: 'blue',
+      },
+      '𝄡': {
+        text: 'A0',
+        color: 'blue',
+      },
+    }
   },
   70: {
-    noteOffset: {
-      '𝄞': 1,
-      '𝄢': 2,
-      '𝄡': -1
-    },
+    noteOffset: 1,
     modifier: 'sharp',
-    text: 'A',
-    color: 'black',
+    info: {
+      '𝄞': {
+        text: 'A0',
+        color: 'blue',
+      },
+      '𝄢': {
+        text: 'A0',
+        color: 'blue',
+      },
+      '𝄡': {
+        text: 'A0',
+        color: 'blue',
+      },
+    }
   },
   71: {
-    noteOffset: {
-      '𝄞': -1,
-      '𝄢': 0,
-      '𝄡': -1
-    },
-    text: 'B',
-    color: 'blue',
+    noteOffset: 2,
+    info: {
+      '𝄞': {
+        text: 'A0',
+        color: 'blue',
+      },
+      '𝄢': {
+        text: 'A0',
+        color: 'blue',
+      },
+      '𝄡': {
+        text: 'A0',
+        color: 'blue',
+      },
+    }
   }
 }
 
@@ -155,18 +188,23 @@ export const NoteDisplay = ({
 
   const clef = useClef()
 
+  const noteOffset = noteLookup[noteId]?.noteOffset ? noteLookup[noteId].noteOffset + ClefOffsets[clef] : undefined
+
   return (
     <NotesContainer>
       <StaffLayer>
         {'𝄚'}
       </StaffLayer>
+      <LedgerLayer>
+        {noteOffset && noteOffset < -4 ? '𝄘' : ''}
+      </LedgerLayer>
       <ClefLayer>
         {clef}
       </ClefLayer>
-      <NoteLayer noteOffset={noteLookup[noteId]?.noteOffset[clef] || 0}>
+      <NoteLayer noteOffset={noteOffset || 0}>
         {noteId ? '𝅘' : ''}
       </NoteLayer>
-      <NoteModifierLayer noteOffset={noteLookup[noteId]?.noteOffset[clef] || 0}>
+      <NoteModifierLayer noteOffset={noteOffset || 0}>
         {noteLookup[noteId]?.modifier === 'flat' ? 
           '♭'
         : noteLookup[noteId]?.modifier === 'sharp' ?
@@ -175,11 +213,11 @@ export const NoteDisplay = ({
           ''
         }
       </NoteModifierLayer>
-      <NoteSpeedLayer noteOffset={noteLookup[noteId]?.noteOffset[clef] || 0}>
+      <NoteSpeedLayer noteOffset={noteOffset || 0}>
         {getNoteVelocitySymbol(velocity)}
       </NoteSpeedLayer>
-      <NoteInfoLayer color={noteLookup[noteId]?.color || 'black'}>
-        {noteLookup[noteId]?.text || ''}
+      <NoteInfoLayer color={noteLookup[noteId]?.info[clef].color || 'black'}>
+        {noteLookup[noteId]?.info[clef].text || ''}
       </NoteInfoLayer>
     </NotesContainer>
   )
