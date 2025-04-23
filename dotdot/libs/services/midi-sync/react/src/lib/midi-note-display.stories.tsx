@@ -12,7 +12,11 @@ type Story = StoryObj<typeof MidiNoteDisplay>;
 
 export const Primary = {
   args: {
-    note: '',
+    note: {
+      noteId: 69,
+      duration: 'short',
+      velocity: 100,
+    },
     countdownValue: 0,
     holdValue: 0,
   },

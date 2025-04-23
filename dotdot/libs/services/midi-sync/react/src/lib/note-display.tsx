@@ -1,6 +1,6 @@
 import { ReactNode } from "react"
 import styled from "styled-components"
-import { useClef } from "./clef-context"
+import { Clef, useClef } from "./clef-context"
 
 export type NoteDisplayProps = {
   noteId: number
@@ -40,9 +40,19 @@ const NoteLayer = styled.div<NoteLayerProps>({
   width: '100%',
   height: '100%',
   fontSize: 50,
-  transform: 'translate(25%, 0)'
 }, props => ({
   transform: `translate(25%, ${props.noteOffset * 12}%)`
+}))
+
+const NoteModifierLayer = styled.div<NoteLayerProps>({
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  width: '100%',
+  height: '100%',
+  fontSize: 30,
+}, props => ({
+  transform: `translate(25%, ${-10 + (props.noteOffset * 12)}%)`
 }))
 
 const ClefLayer = styled.div({
@@ -55,10 +65,33 @@ const ClefLayer = styled.div({
   transform: 'translate(-50%, 0)'
 })
 
-const noteLookup: Record<number, {noteOffset: number}> = {
+type NoteOffsetLookup = Record<Clef, number>
+
+type NoteDisplayLookupProps = {
+  noteOffset: NoteOffsetLookup,
+  modifier?: 'flat' | 'sharp'
+}
+const noteLookup: Record<number, NoteDisplayLookupProps> = {
   69: {
-    noteOffset: -1
+    noteOffset: {
+      '𝄞': -1,
+      '𝄢': 0,
+    },
+    modifier: 'flat',
   },
+  70: {
+    noteOffset: {
+      '𝄞': 1,
+      '𝄢': 2,
+    },
+    modifier: 'sharp',
+  },
+  71: {
+    noteOffset: {
+      '𝄞': -1,
+      '𝄢': 0,
+    },
+  }
 }
 
 export const NoteDisplay = ({
@@ -72,14 +105,23 @@ export const NoteDisplay = ({
   return (
     <NotesContainer>
       <StaffLayer>
-        {'𝄙'}
+        {'𝄚'}
       </StaffLayer>
       <ClefLayer>
         {clef}
       </ClefLayer>
-      <NoteLayer noteOffset={noteLookup[noteId]?.noteOffset || 0}>
-        {noteId ? '𝅗' : ''}
-      </NoteLayer> 
+      <NoteLayer noteOffset={noteLookup[noteId]?.noteOffset[clef] || 0}>
+        {noteId ? '𝅘' : ''}
+      </NoteLayer>
+      <NoteModifierLayer noteOffset={noteLookup[noteId]?.noteOffset[clef] || 0}>
+        {noteLookup[noteId]?.modifier === 'flat' ? 
+          '♭'
+        : noteLookup[noteId]?.modifier === 'sharp' ?
+          '♯'
+        :
+          ''
+        }
+      </NoteModifierLayer>
     </NotesContainer>
   )
 }
