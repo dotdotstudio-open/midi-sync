@@ -41,7 +41,7 @@ const NoteLayer = styled.div<NoteLayerProps>({
   height: '100%',
   fontSize: 50,
 }, props => ({
-  transform: `translate(25%, ${props.noteOffset * 12}%)`
+  transform: `translate(54%, ${props.noteOffset * 12}%)`
 }))
 
 const NoteModifierLayer = styled.div<NoteLayerProps>({
@@ -50,9 +50,9 @@ const NoteModifierLayer = styled.div<NoteLayerProps>({
   left: 0,
   width: '100%',
   height: '100%',
-  fontSize: 30,
+  fontSize: 50,
 }, props => ({
-  transform: `translate(25%, ${-10 + (props.noteOffset * 12)}%)`
+  transform: `translate(8%, ${props.noteOffset * 12}%)`
 }))
 
 const ClefLayer = styled.div({
