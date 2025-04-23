@@ -188,7 +188,7 @@ export const NoteDisplay = ({
 
   const clef = useClef()
 
-  const noteOffset = noteLookup[noteId]?.noteOffset ? noteLookup[noteId].noteOffset + ClefOffsets[clef] : undefined
+  const noteOffset = noteLookup[noteId]? noteLookup[noteId].noteOffset + ClefOffsets[clef] : undefined
 
   return (
     <NotesContainer>
