@@ -94,6 +94,7 @@ export const MidiPlaybackController = ({
     }
     state.lastEventIndex += 1
     state.lastEventTime += deltaTimeMs
+    state.noteOffDelay = 0
     return true
   }, [])
 
@@ -107,7 +108,7 @@ export const MidiPlaybackController = ({
   useMotionValueEvent(playbackTime, 'change', (time) => {
     // Reset if we have gone back in time - we will need to scan
     // from the start of the file again
-    if (trackStates.current.some(trackState => trackState.lastEventTime > time)) {
+    if (trackStates.current.some(trackState => (trackState.lastEventTime - trackState.noteOffDelay) > time)) {
       console.log('[Midi Playback Controller] Resetting playback state')
       setCountdownValue(0)
       setHoldValue(0)
