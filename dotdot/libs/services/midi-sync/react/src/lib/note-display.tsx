@@ -115,19 +115,22 @@ type NoteDisplayLookupProps = {
   text: string
 } & NoteInfoProps
 const noteLookup: Record<number, NoteDisplayLookupProps> = {
+  //A natural
   69: {
     noteOffset: {
-      '𝄞': -1,
+      '𝄞': -2,
       '𝄢': 0,
+      '𝄡': -1
     },
-    modifier: 'flat',
-    text: 'C',
-    color: 'red',
+    //modifier: 'flat',
+    text: 'A0',
+    color: 'blue',
   },
   70: {
     noteOffset: {
       '𝄞': 1,
       '𝄢': 2,
+      '𝄡': -1
     },
     modifier: 'sharp',
     text: 'A',
@@ -137,6 +140,7 @@ const noteLookup: Record<number, NoteDisplayLookupProps> = {
     noteOffset: {
       '𝄞': -1,
       '𝄢': 0,
+      '𝄡': -1
     },
     text: 'B',
     color: 'blue',

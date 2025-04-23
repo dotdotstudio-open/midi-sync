@@ -22,7 +22,7 @@ Place any Midi files you want to be played back in the `public midi` folder of t
 
 ### Launch the backend and frontend
 ```bash
-nx serve-app midi-sync-player
+npx nx serve-app midi-sync-player
 ```
 
 ### Open the app on the same computer

@@ -13,10 +13,15 @@ export const ClefSelector = () => {
     setClef('𝄢')
   }, [setClef])
 
+  const setClef3 = useCallback(() => {
+    setClef('𝄡')
+  }, [setClef])
+
 
   return (
     <Flex dir='row'>
         <Button onClick={setClef1}>𝄞</Button>
+        <Button onClick={setClef3}>𝄡</Button>
         <Button onClick={setClef2}>𝄢</Button>
     </Flex>
   )

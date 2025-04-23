@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react"
 
-export type Clef = '𝄞' | '𝄢'
+export type Clef = '𝄞' | '𝄢' | '𝄡'
 
 export type ClefContextType = {
   clef: Clef,
