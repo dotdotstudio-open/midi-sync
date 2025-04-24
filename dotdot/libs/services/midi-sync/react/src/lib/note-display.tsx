@@ -71,9 +71,9 @@ const NoteModifierLayer = styled.div<NoteLayerProps>({
   left: 0,
   width: '100%',
   height: '100%',
-  fontSize: 50,
+  fontSize: 25, //50 is original font size
 }, props => ({
-  transform: `translate(8%, ${props.noteOffset * 12.4}%)`
+  transform: `translate(8%, ${(props.noteOffset + 3.5) * 12.4}%)` //added 3.5 offset to compensate for smaller font size
 }))
 
 const NoteSpeedLayer = styled.div({
