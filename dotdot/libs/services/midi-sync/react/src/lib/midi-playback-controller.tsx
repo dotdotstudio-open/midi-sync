@@ -59,11 +59,13 @@ export const MidiPlaybackController = ({
     } else if (currentEvent.type === 'noteOn') {
       setNote(prev => {
         if (prev) return prev
-        let noteDuration: 'short' | 'long' = 'long'
+        let noteDuration: 'short' | 'medium' | 'long' = 'medium'
         if (track.length > state.lastEventIndex + 2) {
           const nextEvent = track[state.lastEventIndex + 1]
           if (nextEvent.type === 'noteOff') {
-            noteDuration = nextEvent.deltaTime > (ticksPerBeat.current / 8) ? 'long' : 'short'
+            noteDuration = nextEvent.deltaTime > (ticksPerBeat.current / 4) ? 'long' :
+            nextEvent.deltaTime > (ticksPerBeat.current / 8) ? 'medium' :
+            'short'
           }
         }
         return {
