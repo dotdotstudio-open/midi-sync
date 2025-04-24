@@ -5,7 +5,7 @@ import { noteLookup } from "./notes-lookup"
 
 export type NoteDisplayProps = {
   noteId: number
-  duration: 'short' | 'long'
+  duration: 'short' | 'medium' | 'long'
   velocity: number
 }
 
@@ -63,6 +63,17 @@ const NoteLayer = styled.div<NoteLayerProps>({
   fontSize: 50,
 }, props => ({
   transform: `translate(54%, ${props.noteOffset * 12.4}%)`
+}))
+
+const NoteStaccatoLayer = styled.div<NoteLayerProps>({
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  width: '100%',
+  height: '100%',
+  fontSize: 30,
+}, props => ({
+  transform: `translate(54%, ${5 + (props.noteOffset % 2 === 0 ? 13 : 0) + props.noteOffset * 12.4}%)`
 }))
 
 const NoteModifierLayer = styled.div<NoteLayerProps>({
@@ -152,8 +163,11 @@ export const NoteDisplay = ({
         {clef}
       </ClefLayer>
       <NoteLayer noteOffset={noteOffset || 0}>
-        {noteId ? '𝅘' : ''}
+        {noteId ? duration === 'long' ? '𝅝' : '𝅘' : ''}
       </NoteLayer>
+      <NoteStaccatoLayer noteOffset={noteOffset || 0}>
+        {(noteId && duration === 'short') ? '·' : ''}
+      </NoteStaccatoLayer>
       <NoteModifierLayer noteOffset={noteOffset || 0}>
         {noteLookup[noteId]?.modifier === 'flat' ? 
           '♭'
