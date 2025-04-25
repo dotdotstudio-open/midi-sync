@@ -47,8 +47,8 @@ export const MidiPlaybackController = ({
           }
           setNote({
             noteId: nextEvent.noteNumber,
-            duration: noteDuration > (ticksPerBeat.current / 4) ? 'long' :
-            noteDuration > (ticksPerBeat.current / 8) ? 'medium' :
+            duration: noteDuration >= (ticksPerBeat.current / 4) ? 'long' :
+            noteDuration >= (ticksPerBeat.current / 8) ? 'medium' :
             'short',
             velocity: nextEvent.velocity
           })
@@ -65,8 +65,8 @@ export const MidiPlaybackController = ({
         if (track.length > state.lastEventIndex + 2) {
           const nextEvent = track[state.lastEventIndex + 1]
           if (nextEvent.type === 'noteOff') {
-            noteDuration = nextEvent.deltaTime > (ticksPerBeat.current / 4) ? 'long' :
-            nextEvent.deltaTime > (ticksPerBeat.current / 8) ? 'medium' :
+            noteDuration = nextEvent.deltaTime >= (ticksPerBeat.current / 4) ? 'long' :
+            nextEvent.deltaTime >= (ticksPerBeat.current / 8) ? 'medium' :
             'short'
           }
         }
