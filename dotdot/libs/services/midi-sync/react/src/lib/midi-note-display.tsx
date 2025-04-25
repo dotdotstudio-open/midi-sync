@@ -29,7 +29,7 @@ export const MidiNoteDisplay = ({
         format={() => <NoteDisplay {...note} />}
         percent={countdownValue}
         success={{percent: holdValue}}
-        size={[500, 500]}
+        size={500}
       />
     </Container>
   )
