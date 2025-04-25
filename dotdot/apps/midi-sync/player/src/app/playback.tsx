@@ -17,7 +17,7 @@ const PlaybackContainer = styled.div({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  justifyContent: 'center',
+  justifyContent: 'space-around',
 })
 
 export const Playback = () => {
