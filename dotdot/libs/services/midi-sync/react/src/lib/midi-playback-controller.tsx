@@ -47,7 +47,9 @@ export const MidiPlaybackController = ({
           }
           setNote({
             noteId: nextEvent.noteNumber,
-            duration: noteDuration > (ticksPerBeat.current / 8) ? 'long' : 'short',
+            duration: noteDuration > (ticksPerBeat.current / 4) ? 'long' :
+            noteDuration > (ticksPerBeat.current / 8) ? 'medium' :
+            'short',
             velocity: nextEvent.velocity
           })
           state.noteOffDelay = deltaTimeMs
