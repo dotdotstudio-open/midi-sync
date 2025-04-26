@@ -17,6 +17,47 @@ type PlaybackTrackState = {
   noteOffDelay: number
 }
 
+// Finds the next event of the specified type in the track, 
+// accumulating the delays of any intermediary events along the way
+const getNextEvent = (
+  track: MidiEvent[], 
+  scanStartIndex: number, 
+  eventType: 'noteOn' | 'noteOff'
+): {
+  nextEventIndex: number, 
+  nextEventDuration: number
+} => {
+  let nextEventDuration = 0
+  let nextEventIndex = scanStartIndex
+  let foundEvent = false
+  // accumulate duration of any intermediate events until we 
+  // either get to the end of the track
+  // or find the desired event
+  while (nextEventIndex < track.length && !foundEvent) {
+    nextEventDuration += track[nextEventIndex].deltaTime
+    if (track[nextEventIndex].type === eventType) {
+      foundEvent = true
+    } else {
+      nextEventIndex += 1
+    }
+  }
+
+  return {nextEventDuration, nextEventIndex}
+}
+
+const getNoteLength = (
+  ticksPerBeat: number,
+  noteTicks: number,
+) => {
+  if (noteTicks >= ticksPerBeat) {
+    return 'long'
+  } else if (noteTicks >= ticksPerBeat / 2) {
+    return 'medium'
+  } else {
+    return 'short'
+  }
+}
+
 export const MidiPlaybackController = ({
   midiData
 }: MidiPlaybackControllerProps) => {
@@ -34,46 +75,32 @@ export const MidiPlaybackController = ({
     
     // Special case of note off - we process immediately and store the delay for the next event
     if (currentEvent.type === 'noteOff') {
-      // look ahead for next note
-      if (track.length > state.lastEventIndex + 2) {
-        const nextEvent = track[state.lastEventIndex + 1]
-        if (nextEvent.type === 'noteOn') {
-          let noteDuration = ticksPerBeat.current
-          if (track.length > state.lastEventIndex + 3) {
-            const nextNextEvent = track[state.lastEventIndex + 2]
-            if (nextNextEvent.type === 'noteOff') {
-              noteDuration = nextNextEvent.deltaTime
-            }
-          }
-          setNote({
-            noteId: nextEvent.noteNumber,
-            duration: noteDuration >= (ticksPerBeat.current) ? 'long' :
-            noteDuration >= (ticksPerBeat.current / 2) ? 'medium' :
-            'short',
-            velocity: nextEvent.velocity
-          })
-          state.noteOffDelay = deltaTimeMs
-          state.lastEventIndex += 1
-          state.lastEventTime += deltaTimeMs
-          return false
-        }
+      // look ahead for next note on
+      const nextNoteOn = getNextEvent(track, state.lastEventIndex + 1, 'noteOn')
+      const nextNoteOnEvent = nextNoteOn.nextEventIndex < track.length ? track[nextNoteOn.nextEventIndex] : undefined
+      if (nextNoteOnEvent && nextNoteOnEvent.type === 'noteOn') {
+        // look ahead for next note off to get note duration
+        const nextNoteOff = getNextEvent(track, nextNoteOn.nextEventIndex + 1, 'noteOff')
+        setNote({
+          noteId: nextNoteOnEvent.noteNumber,
+          duration: getNoteLength(ticksPerBeat.current, nextNoteOff.nextEventDuration),
+          velocity: nextNoteOnEvent.velocity
+        })
+      } else {
+        setNote(undefined)
       }
+      state.noteOffDelay = deltaTimeMs
+      state.lastEventIndex += 1
+      state.lastEventTime += deltaTimeMs
+      return false
     } else if (currentEvent.type === 'noteOn') {
       setNote(prev => {
         if (prev) return prev
-        let noteDuration: 'short' | 'medium' | 'long' = 'medium'
-        if (track.length > state.lastEventIndex + 2) {
-          const nextEvent = track[state.lastEventIndex + 1]
-          if (nextEvent.type === 'noteOff') {
-            noteDuration = nextEvent.deltaTime >= (ticksPerBeat.current) ? 'long' :
-            nextEvent.deltaTime >= (ticksPerBeat.current / 2) ? 'medium' :
-            'short'
-          }
-        }
+        const nextNoteOff = getNextEvent(track, state.lastEventIndex + 1, 'noteOff')
         return {
           noteId: currentEvent.noteNumber,
-          duration: noteDuration,
-          velocity: currentEvent.velocity,
+          duration: getNoteLength(ticksPerBeat.current, nextNoteOff.nextEventDuration),
+          velocity: currentEvent.velocity
         }
       })
       if (state.lastEventTime + deltaTimeMs > time) {
